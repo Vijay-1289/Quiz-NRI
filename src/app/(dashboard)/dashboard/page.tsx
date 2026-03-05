@@ -1,11 +1,16 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+    const session = await getServerSession(authOptions);
+    const firstName = session?.user?.name ? session.user.name.split(" ")[0] : "User";
+
     return (
         <>
             <div className="dashboard-header">
-                <h1 className="dashboard-title">Welcome back, Alex! 👋</h1>
-                <p className="dashboard-subtitle">You're making great progress. 12 out of 18 modules completed.</p>
+                <h1 className="dashboard-title">Welcome back, {firstName}! 👋</h1>
+                <p className="dashboard-subtitle">You&apos;re making great progress. 12 out of 18 modules completed.</p>
             </div>
 
             <div className="dashboard-grid">
@@ -21,8 +26,8 @@ export default function Dashboard() {
                         <div className="milestone-content">
                             <h3>Learning Milestone</h3>
                             <p>
-                                You've mastered the basics of Professional Introductions and Tenses. Next goal: "Handling
-                                Behavioral Questions" in the MNC Track.
+                                You&apos;ve mastered the basics of Professional Introductions and Tenses. Next goal: &ldquo;Handling
+                                Behavioral Questions&rdquo; in the MNC Track.
                             </p>
                             <button className="btn btn-dark">Continue Learning</button>
                         </div>
@@ -83,7 +88,7 @@ export default function Dashboard() {
                         <div className="activity-item">
                             <div className="activity-dot"></div>
                             <div className="activity-details">
-                                <h4>Completed "Mock Interview #3"</h4>
+                                <h4>Completed &ldquo;Mock Interview #3&rdquo;</h4>
                                 <div className="activity-time">2 hours ago</div>
                                 <span className="activity-score">Score: 8.5/10</span>
                             </div>
@@ -92,7 +97,7 @@ export default function Dashboard() {
                         <div className="activity-item">
                             <div className="activity-dot"></div>
                             <div className="activity-details">
-                                <h4>Started "Conditionals" lesson</h4>
+                                <h4>Started &ldquo;Conditionals&rdquo; lesson</h4>
                                 <div className="activity-time">Yesterday</div>
                             </div>
                         </div>
@@ -100,7 +105,7 @@ export default function Dashboard() {
                         <div className="activity-item">
                             <div className="activity-dot"></div>
                             <div className="activity-details">
-                                <h4>Earned "Vocabulary Master" badge</h4>
+                                <h4>Earned &ldquo;Vocabulary Master&rdquo; badge</h4>
                                 <div className="activity-time">3 days ago</div>
                             </div>
                         </div>
@@ -108,7 +113,7 @@ export default function Dashboard() {
                         <div className="activity-item">
                             <div className="activity-dot"></div>
                             <div className="activity-details">
-                                <h4>Unlocked "Google Mock Prep"</h4>
+                                <h4>Unlocked &ldquo;Google Mock Prep&rdquo;</h4>
                                 <div className="activity-time">Oct 24, 2023</div>
                             </div>
                         </div>

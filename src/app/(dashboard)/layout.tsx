@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function DashboardLayout({
     children,
@@ -58,16 +59,24 @@ export default function DashboardLayout({
                         <i className={`${pathname === "/settings" ? "ph-fill" : "ph"} ph-gear`}></i>
                         Settings
                     </Link>
+                    <Link
+                        href="/profile"
+                        className={`nav-item ${pathname === "/profile" ? "active" : ""}`}
+                    >
+                        <i className={`${pathname === "/profile" ? "ph-fill" : "ph"} ph-user`}></i>
+                        Profile
+                    </Link>
                     <div className="user-profile">
-                        <div className="user-avatar">
-                            {session?.user?.image ? (
-                                <img src={session.user.image} alt="User Avatar" />
-                            ) : (
-                                <i className="ph-fill ph-user"></i>
-                            )}
+                        <div className="user-avatar" style={{ position: 'relative', width: '40px', height: '40px' }}>
+                            <Image
+                                src={session?.user?.image || "/assets/default_avatar.png"}
+                                alt="User Avatar"
+                                fill
+                                style={{ objectFit: 'cover', borderRadius: '50%' }}
+                            />
                         </div>
                         <div className="user-info">
-                            <span className="user-name">{session?.user?.name || "Alex Johnson"}</span>
+                            <span className="user-name">{session?.user?.name || "Premium User"}</span>
                             <span className="user-role">Premium Member</span>
                         </div>
                     </div>
