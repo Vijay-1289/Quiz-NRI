@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Interview Ready</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="old_style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body class="auth-body">
+    <header class="auth-header container">
+        <a href="old_index.html" class="logo">
+            <div class="logo-icon">
+                <i class="ph-fill ph-graduation-cap"></i>
+            </div>
+            <span>Interview Ready</span>
+        </a>
+        <div class="auth-header-right">
+            Elevate your professional English
+        </div>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <h1 class="auth-title">Sign In</h1>
+            <p class="auth-subtitle">Welcome back to your English learning journey.</p>
+
+            <button class="btn btn-outline btn-google">
+                <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google"
+                    class="google-icon">
+                Sign in with Google
+            </button>
+
+            <div class="auth-divider">
+                <span>OR</span>
+            </div>
+
+            <form class="auth-form" action="old_index.html">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-icon-wrapper">
+                        <i class="ph ph-envelope"></i>
+                        <input type="email" placeholder="name@company.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-flex">
+                        <label>Password</label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+                    <div class="input-icon-wrapper">
+                        <i class="ph-fill ph-lock-key"></i>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark btn-submit">Sign In</button>
+            </form>
+
+            <p class="auth-bottom-text">
+                New to Interview Ready? <a href="signup.html">Create an account</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="auth-footer container">
+        <div class="footer-bottom-auth">
+            <p>&copy; 2024 Interview Ready English Learning Platform. All rights reserved.</p>
+            <div class="footer-links-inline">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
