@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function DashboardLayout({
     children,
@@ -9,6 +10,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }>) {
     const pathname = usePathname();
+    const { data: session } = useSession();
 
     const navItems = [
         { name: "Dashboard", href: "/dashboard", icon: "ph-squares-four" },
@@ -58,10 +60,14 @@ export default function DashboardLayout({
                     </Link>
                     <div className="user-profile">
                         <div className="user-avatar">
-                            <i className="ph-fill ph-user"></i>
+                            {session?.user?.image ? (
+                                <img src={session.user.image} alt="User Avatar" />
+                            ) : (
+                                <i className="ph-fill ph-user"></i>
+                            )}
                         </div>
                         <div className="user-info">
-                            <span className="user-name">Alex Johnson</span>
+                            <span className="user-name">{session?.user?.name || "Alex Johnson"}</span>
                             <span className="user-role">Premium Member</span>
                         </div>
                     </div>

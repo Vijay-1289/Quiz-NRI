@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +28,10 @@ export default function SignUp() {
                     <h1 className="auth-title">Create Account</h1>
                     <p className="auth-subtitle">Join Interview Ready to ace your next career move</p>
 
-                    <button className="btn btn-outline btn-google">
+                    <button
+                        className="btn btn-outline btn-google"
+                        onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+                    >
                         <Image src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google" width={24} height={24} className="google-icon" />
                         Sign up with Google
                     </button>
