@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 
 export default function DashboardLayout({
@@ -80,6 +80,14 @@ export default function DashboardLayout({
                             <span className="user-role">Premium Member</span>
                         </div>
                     </div>
+                    <button
+                        onClick={() => signOut({ callbackUrl: '/login' })}
+                        className="nav-item"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', color: '#ef4444' }}
+                    >
+                        <i className="ph ph-sign-out" style={{ color: '#ef4444' }}></i>
+                        Sign Out
+                    </button>
                 </div>
             </aside>
 
