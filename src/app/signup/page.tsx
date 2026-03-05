@@ -36,7 +36,7 @@ export default function SignUp() {
                         <span>OR</span>
                     </div>
 
-                    <form className="auth-form" action="/">
+                    <form className="auth-form" action="/dashboard">
                         <div className="form-group">
                             <label>Full Name</label>
                             <div className="input-icon-wrapper">

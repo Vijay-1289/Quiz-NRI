@@ -35,7 +35,7 @@ export default function Login() {
                         <span>OR</span>
                     </div>
 
-                    <form className="auth-form" action="/">
+                    <form className="auth-form" action="/dashboard">
                         <div className="form-group">
                             <label>Email Address</label>
                             <div className="input-icon-wrapper">
