@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function SignUp() {
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
         <div className="auth-body">
             <header className="auth-header container">
@@ -52,8 +57,10 @@ export default function SignUp() {
                             <label>Password</label>
                             <div className="input-icon-wrapper">
                                 <i className="ph-fill ph-lock-key"></i>
-                                <input type="password" placeholder="••••••••" required />
-                                <button type="button" className="eye-btn"><i className="ph-fill ph-eye"></i></button>
+                                <input type={showPassword ? "text" : "password"} placeholder="••••••••" required />
+                                <button type="button" className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
+                                    <i className={`ph-fill ${showPassword ? "ph-eye-slash" : "ph-eye"}`}></i>
+                                </button>
                             </div>
                         </div>
 
