@@ -1190,7 +1190,7 @@ ul {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: conic-gradient(var(--primary-dark) 65%, #e2e8f0 0);
+  background: conic-gradient(var(--primary-dark) var(--progress, 0%), #e2e8f0 0);
   display: flex;
   align-items: center;
   justify-content: center;

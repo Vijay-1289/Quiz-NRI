@@ -16,7 +16,7 @@ export default async function Dashboard() {
                 <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
                     {/* Getting Started Card */}
                     <div className="card milestone-card">
-                        <div className="progress-circle">
+                        <div className="progress-circle" style={{ '--progress': '0%' } as React.CSSProperties}>
                             <div className="progress-inner">
                                 <span className="progress-value">–</span>
                                 <span className="progress-label">OVERALL</span>
