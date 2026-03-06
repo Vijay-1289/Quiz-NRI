@@ -2,31 +2,120 @@
 
 import { useState } from "react";
 
-// ── Layout constants — these define the SVG grid ──────────────────────────────
-const SVG_W = 700;
-const STEP_H = 190;   // vertical distance between node centres
-const START_Y = 100;   // Y of first node centre
-const NODE_X_L = 120;   // X of left-side node centres
-const NODE_X_R = 580;   // X of right-side node centres
-const NODE_R = 36;    // node radius (= half of 72px diameter)
+// ── Layout constants ─────────────────────────────────────────────────────────
+const SVG_W = 380;
+const STEP_H = 160;
+const START_Y = 90;
+const NODE_X_L = 70;
+const NODE_X_R = 310;
+const NODE_R = 32;
 
-// ── Chapter data — replace with real API data later ───────────────────────────
+// ── Types ────────────────────────────────────────────────────────────────────
 type Status = "completed" | "current" | "locked";
+
+interface Blog { title: string; readTime: string; read: boolean; }
 interface Chapter {
     id: number; status: Status; title: string; icon: string;
     lessons: number; minutes: number; lessonProgress: number;
-    quizScore?: number; description: string;
+    quizScore?: number; description: string; blogs: Blog[];
 }
 
+// ── Chapter data ─────────────────────────────────────────────────────────────
 const chapters: Chapter[] = [
-    { id: 1, status: "completed", title: "The Art of Introduction", icon: "ph-hand-waving", lessons: 5, minutes: 45, lessonProgress: 100, quizScore: 100, description: "Craft a compelling elevator pitch and master first impressions." },
-    { id: 2, status: "current", title: "Professional Vocabulary", icon: "ph-book-open-text", lessons: 4, minutes: 60, lessonProgress: 25, description: "Expand your industry-specific vocabulary and use power words." },
-    { id: 3, status: "locked", title: "Handling Tough Questions", icon: "ph-lightning", lessons: 6, minutes: 90, lessonProgress: 0, description: "Turn curveball interview questions into your strongest moments." },
-    { id: 4, status: "locked", title: "Salary Negotiation", icon: "ph-currency-dollar", lessons: 5, minutes: 75, lessonProgress: 0, description: "Negotiate your worth with confidence and data-driven tactics." },
-    { id: 5, status: "locked", title: "Storytelling & STAR Method", icon: "ph-star", lessons: 6, minutes: 80, lessonProgress: 0, description: "Structure your answers using the proven STAR framework." },
-    { id: 6, status: "locked", title: "Non-Verbal Communication", icon: "ph-person", lessons: 4, minutes: 55, lessonProgress: 0, description: "Command any room through body language and eye contact." },
-    { id: 7, status: "locked", title: "Email & Written English", icon: "ph-envelope-open", lessons: 5, minutes: 60, lessonProgress: 0, description: "Write clear, professional emails and reports." },
-    { id: 8, status: "locked", title: "Final Mock Interview", icon: "ph-trophy", lessons: 3, minutes: 90, lessonProgress: 0, description: "Put it all together in a realistic, scored simulation." },
+    {
+        id: 1, status: "completed", title: "The Art of Introduction",
+        icon: "ph-hand-waving", lessons: 5, minutes: 45, lessonProgress: 100, quizScore: 92,
+        description: "Craft a compelling elevator pitch and make a lasting first impression.",
+        blogs: [
+            { title: "Why Your First 30 Seconds Matter Most", readTime: "4 min", read: true },
+            { title: "Crafting the Perfect Elevator Pitch", readTime: "6 min", read: true },
+            { title: "Non-Verbal Cues That Build Instant Trust", readTime: "5 min", read: true },
+            { title: "Common Introduction Mistakes to Avoid", readTime: "3 min", read: true },
+            { title: "Adapting Your Intro for Different Audiences", readTime: "5 min", read: true },
+        ],
+    },
+    {
+        id: 2, status: "current", title: "Professional Vocabulary",
+        icon: "ph-book-open-text", lessons: 4, minutes: 60, lessonProgress: 25,
+        description: "Expand your industry vocabulary and learn to use power words with precision.",
+        blogs: [
+            { title: "Top 50 Industry Buzzwords That Actually Matter", readTime: "7 min", read: true },
+            { title: "Impactful Action Verbs for Every Situation", readTime: "5 min", read: false },
+            { title: "Articulation & Clarity: Speak With Confidence", readTime: "6 min", read: false },
+            { title: "Vocabulary That Signals Leadership", readTime: "4 min", read: false },
+        ],
+    },
+    {
+        id: 3, status: "locked", title: "Handling Tough Questions",
+        icon: "ph-lightning", lessons: 6, minutes: 90, lessonProgress: 0,
+        description: "Turn curveball questions into your strongest interview moments.",
+        blogs: [
+            { title: "The STAR Method Explained", readTime: "5 min", read: false },
+            { title: "Handling 'Weakness' Questions Gracefully", readTime: "4 min", read: false },
+            { title: "What To Do When You Don't Know the Answer", readTime: "3 min", read: false },
+            { title: "Salary Expectations — What To Say", readTime: "4 min", read: false },
+            { title: "Redirecting Hostile Follow-Up Questions", readTime: "5 min", read: false },
+            { title: "Practice Drills: 10 Rapid-Fire Scenarios", readTime: "8 min", read: false },
+        ],
+    },
+    {
+        id: 4, status: "locked", title: "Salary Negotiation",
+        icon: "ph-currency-dollar", lessons: 5, minutes: 75, lessonProgress: 0,
+        description: "Negotiate your worth with data-driven confidence.",
+        blogs: [
+            { title: "Research Your Market Value", readTime: "6 min", read: false },
+            { title: "Scripts That Open the Conversation", readTime: "5 min", read: false },
+            { title: "Countering a Low Offer Without Burning Bridges", readTime: "4 min", read: false },
+            { title: "When to Walk Away — and When Not To", readTime: "3 min", read: false },
+            { title: "Beyond Salary: Negotiate Your Full Package", readTime: "5 min", read: false },
+        ],
+    },
+    {
+        id: 5, status: "locked", title: "Storytelling & STAR Method",
+        icon: "ph-star", lessons: 6, minutes: 80, lessonProgress: 0,
+        description: "Structure compelling answers using the proven STAR framework.",
+        blogs: [
+            { title: "Why Stories Beat Facts in Every Interview", readTime: "4 min", read: false },
+            { title: "Building a STAR Response Step by Step", readTime: "7 min", read: false },
+            { title: "Situation & Task: Setting the Scene", readTime: "4 min", read: false },
+            { title: "Action: Showing Your Thinking Process", readTime: "5 min", read: false },
+            { title: "Result: Quantifying Your Impact", readTime: "4 min", read: false },
+            { title: "20 STAR Story Templates You Can Adapt", readTime: "10 min", read: false },
+        ],
+    },
+    {
+        id: 6, status: "locked", title: "Non-Verbal Communication",
+        icon: "ph-person", lessons: 4, minutes: 55, lessonProgress: 0,
+        description: "Command any room through body language and presence.",
+        blogs: [
+            { title: "The Power of Posture in Interviews", readTime: "4 min", read: false },
+            { title: "Eye Contact Rules: Too Little vs Too Much", readTime: "3 min", read: false },
+            { title: "Hand Gestures That Signal Confidence", readTime: "4 min", read: false },
+            { title: "Managing Nervous Habits on Camera", readTime: "5 min", read: false },
+        ],
+    },
+    {
+        id: 7, status: "locked", title: "Email & Written English",
+        icon: "ph-envelope-open", lessons: 5, minutes: 60, lessonProgress: 0,
+        description: "Write clear, professional emails and documents that get results.",
+        blogs: [
+            { title: "Subject Lines That Get Opened", readTime: "3 min", read: false },
+            { title: "The Perfect Post-Interview Follow-Up Email", readTime: "4 min", read: false },
+            { title: "Formal vs Informal: Matching Your Tone", readTime: "4 min", read: false },
+            { title: "Grammar Essentials for Professional Writing", readTime: "6 min", read: false },
+            { title: "Templates for Every Workplace Situation", readTime: "5 min", read: false },
+        ],
+    },
+    {
+        id: 8, status: "locked", title: "Final Mock Interview",
+        icon: "ph-trophy", lessons: 3, minutes: 90, lessonProgress: 0,
+        description: "Put everything together in a realistic, scored simulation.",
+        blogs: [
+            { title: "How to Prepare the Night Before", readTime: "3 min", read: false },
+            { title: "Full Mock Interview — Transcript & Analysis", readTime: "15 min", read: false },
+            { title: "Post-Interview Reflection Checklist", readTime: "4 min", read: false },
+        ],
+    },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -34,7 +123,6 @@ function nodePos(i: number) {
     return { x: i % 2 === 0 ? NODE_X_L : NODE_X_R, y: START_Y + i * STEP_H };
 }
 
-/** Build one continuous cubic-bezier path through every node centre */
 function buildPath(): string {
     const pts = chapters.map((_, i) => nodePos(i));
     return pts.map((p, i) => {
@@ -48,9 +136,15 @@ function buildPath(): string {
 const SVG_H = START_Y + (chapters.length - 1) * STEP_H + START_Y;
 const PATH_D = buildPath();
 
+const statusColors = {
+    completed: { bg: "#22c55e", border: "#16a34a", glow: "rgba(34,197,94,0.3)", text: "white" },
+    current: { bg: "#0f172a", border: "#0f172a", glow: "rgba(15,23,42,0.3)", text: "white" },
+    locked: { bg: "#f1f5f9", border: "#e2e8f0", glow: "transparent", text: "#94a3b8" },
+};
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function MyCourses() {
-    const [active, setActive] = useState<number | null>(null);
+    const [selected, setSelected] = useState<number>(2); // default: open current chapter
 
     const completedCount = chapters.filter(c => c.status === "completed").length;
     const currentCh = chapters.find(c => c.status === "current");
@@ -59,15 +153,18 @@ export default function MyCourses() {
     const overallPct = Math.round((completedCount / chapters.length) * 100);
 
     const lastPos = nodePos(chapters.length - 1);
+    const activeCh = chapters.find(c => c.id === selected);
+    const allRead = activeCh?.blogs.every(b => b.read) ?? false;
+    const readCount = activeCh?.blogs.filter(b => b.read).length ?? 0;
 
     return (
         <div className="map-page">
 
-            {/* ── Header ── */}
+            {/* ── Top header ─────────────────────────────────── */}
             <div className="map-header">
                 <div>
                     <h1 className="map-page-title">Mastering Communication</h1>
-                    <p className="map-page-sub">A comprehensive learning journey</p>
+                    <p className="map-page-sub">Read every article, then take the chapter quiz to unlock the next stop.</p>
                 </div>
                 <div className="map-progress-pill">
                     <div className="map-progress-pill-inner">
@@ -83,104 +180,180 @@ export default function MyCourses() {
                 </div>
             </div>
 
-            {/* ── Journey Map ── */}
-            <div className="map-journey-outer" style={{ height: SVG_H + 60 }}>
+            {/* ── Two-column layout ──────────────────────────── */}
+            <div className="map-layout">
 
-                {/* One SVG, absolutely positioned, draws the full winding path */}
-                <svg className="map-svg" width={SVG_W} height={SVG_H}
-                    viewBox={`0 0 ${SVG_W} ${SVG_H}`} xmlns="http://www.w3.org/2000/svg">
-                    {/* track — full grey dashed */}
-                    <path d={PATH_D} stroke="#dde3ec" strokeWidth="6"
-                        strokeDasharray="12 8" fill="none" strokeLinecap="round" />
-                    {/* progress — green solid, driven by fillPercent */}
-                    <path d={PATH_D} pathLength="100" stroke="#22c55e" strokeWidth="6"
-                        fill="none" strokeLinecap="round"
-                        strokeDasharray={`${fillPercent} 100`}
-                        style={{ transition: "stroke-dasharray 1.2s ease" }} />
-                </svg>
+                {/* LEFT: Winding path map */}
+                <div className="map-col">
+                    <div className="map-journey-outer" style={{ height: SVG_H + 60 }}>
 
-                {/* START badge — anchored to first node */}
-                <div className="map-badge map-badge--start"
-                    style={{ top: START_Y - NODE_R - 46, left: NODE_X_L - 28 }}>
-                    ▶&nbsp;START
+                        {/* SVG path */}
+                        <svg className="map-svg" width={SVG_W} height={SVG_H}
+                            viewBox={`0 0 ${SVG_W} ${SVG_H}`} xmlns="http://www.w3.org/2000/svg">
+                            {/* track */}
+                            <path d={PATH_D} stroke="#e2e8f0" strokeWidth="4"
+                                strokeDasharray="10 7" fill="none" strokeLinecap="round" />
+                            {/* progress fill */}
+                            <path d={PATH_D} pathLength="100" stroke="#22c55e" strokeWidth="4"
+                                fill="none" strokeLinecap="round"
+                                strokeDasharray={`${fillPercent} 100`}
+                                style={{ transition: "stroke-dasharray 1.2s ease" }} />
+                        </svg>
+
+                        {/* START badge */}
+                        <div className="map-badge map-badge--start"
+                            style={{ top: START_Y - NODE_R - 38, left: NODE_X_L - 24 }}>
+                            ▶ START
+                        </div>
+
+                        {/* FINISH badge */}
+                        <div className="map-badge map-badge--finish"
+                            style={{ top: lastPos.y + NODE_R + 10, left: lastPos.x - 34 }}>
+                            🏆 FINISH
+                        </div>
+
+                        {/* Chapter nodes — clean bubbles, no inline cards */}
+                        {chapters.map((ch, i) => {
+                            const pos = nodePos(i);
+                            const side = i % 2 === 0 ? "left" : "right";
+                            const colors = statusColors[ch.status];
+                            const isActive = selected === ch.id;
+
+                            // small label on the opposite side of the path curve
+                            const labelSide = side === "left" ? "right" : "left";
+
+                            return (
+                                <div key={ch.id} className="map-node-wrapper"
+                                    style={{
+                                        top: pos.y - NODE_R,
+                                        left: pos.x - NODE_R,
+                                    }}>
+
+                                    {/* Node bubble */}
+                                    <button
+                                        className={`map-node-v2${ch.status === "locked" ? " locked" : ""}${isActive ? " active" : ""}`}
+                                        style={{
+                                            backgroundColor: colors.bg,
+                                            borderColor: colors.border,
+                                            color: colors.text,
+                                            boxShadow: isActive
+                                                ? `0 0 0 5px ${colors.glow}, 0 6px 20px ${colors.glow}`
+                                                : ch.status !== "locked" ? `0 2px 10px ${colors.glow}` : "none",
+                                        }}
+                                        onClick={() => ch.status !== "locked" && setSelected(ch.id)}
+                                        disabled={ch.status === "locked"}
+                                    >
+                                        {ch.status === "completed" && <i className="ph-bold ph-check" />}
+                                        {ch.status === "current" && <i className={`ph-fill ${ch.icon}`} />}
+                                        {ch.status === "locked" && <i className="ph-fill ph-lock" style={{ fontSize: 18 }} />}
+                                        {ch.status === "current" && <span className="map-node-pulse" />}
+                                    </button>
+
+                                    {/* Compact label tag */}
+                                    <div className={`map-node-label map-node-label--${labelSide}${isActive ? " map-node-label--active" : ""}${ch.status === "locked" ? " map-node-label--locked" : ""}`}>
+                                        <span className="map-node-label-num">Ch {ch.id}</span>
+                                        <span className="map-node-label-title">{ch.title}</span>
+                                    </div>
+
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
 
-                {/* FINISH badge — anchored to last node */}
-                <div className="map-badge map-badge--finish"
-                    style={{ top: lastPos.y + NODE_R + 10, left: lastPos.x - 40 }}>
-                    🏆&nbsp;FINISH
-                </div>
+                {/* RIGHT: Chapter detail panel */}
+                <div className="map-detail-panel">
+                    {activeCh ? (
+                        <div className="map-detail-inner">
 
-                {/* Chapter stops — node button + info card, precisely centred on path */}
-                {chapters.map((ch, i) => {
-                    const pos = nodePos(i);
-                    const side = i % 2 === 0 ? "left" : "right";
-                    const isOpen = active === ch.id;
+                            {/* Chapter header */}
+                            <div className="mdp-header">
+                                <div className={`mdp-status-badge mdp-status-badge--${activeCh.status}`}>
+                                    {activeCh.status === "completed" ? "✓ Completed" : activeCh.status === "current" ? "▶ In Progress" : "🔒 Locked"}
+                                </div>
+                                <div className="mdp-chapter-num">Chapter {activeCh.id}</div>
+                                <h2 className="mdp-title">{activeCh.title}</h2>
+                                <p className="mdp-desc">{activeCh.description}</p>
+                                <div className="mdp-meta">
+                                    <span><i className="ph ph-book-open" /> {activeCh.lessons} lessons</span>
+                                    <span><i className="ph ph-clock" /> {activeCh.minutes} min</span>
+                                    {activeCh.status === "current" && (
+                                        <span><i className="ph ph-article" /> {readCount}/{activeCh.blogs.length} read</span>
+                                    )}
+                                </div>
+                            </div>
 
-                    const nodeBg = ch.status === "completed" ? "#22c55e" : ch.status === "current" ? "#0f172a" : "#f1f5f9";
-                    const nodeBorder = ch.status === "completed" ? "#16a34a" : ch.status === "current" ? "#0f172a" : "#e2e8f0";
-                    const nodeColor = ch.status === "locked" ? "#94a3b8" : "white";
-                    const glowColor = ch.status === "completed" ? "rgba(34,197,94,0.35)" : ch.status === "current" ? "rgba(15,23,42,0.35)" : "transparent";
+                            {/* Progress bar (current chapter) */}
+                            {activeCh.status === "current" && (
+                                <div className="mdp-progress-bar-wrap">
+                                    <div className="mdp-progress-bar">
+                                        <div className="mdp-progress-fill"
+                                            style={{ width: `${(readCount / activeCh.blogs.length) * 100}%` }} />
+                                    </div>
+                                    <span className="mdp-progress-label">
+                                        {Math.round((readCount / activeCh.blogs.length) * 100)}% articles read
+                                    </span>
+                                </div>
+                            )}
 
-                    // Place the stop so the button centre == node SVG coordinate
-                    const stopStyle: React.CSSProperties =
-                        side === "left"
-                            ? { top: pos.y - NODE_R, left: pos.x - NODE_R }
-                            : { top: pos.y - NODE_R, right: SVG_W - pos.x - NODE_R };
+                            {/* Blog list */}
+                            <div className="mdp-section-label">
+                                <i className="ph-fill ph-article" /> Articles in this chapter
+                            </div>
+                            <div className="mdp-blog-list">
+                                {activeCh.blogs.map((blog, bi) => (
+                                    <div key={bi} className={`mdp-blog-item${blog.read ? " mdp-blog-item--read" : ""}`}>
+                                        <div className="mdp-blog-left">
+                                            {blog.read
+                                                ? <i className="ph-fill ph-check-circle mdp-icon-done" />
+                                                : <i className="ph ph-circle mdp-icon-unread" />
+                                            }
+                                            <span className="mdp-blog-title">{blog.title}</span>
+                                        </div>
+                                        <span className="mdp-blog-time">{blog.readTime}</span>
+                                    </div>
+                                ))}
+                            </div>
 
-                    return (
-                        <div key={ch.id} className={`map-stop map-stop--${side}`} style={stopStyle}>
-
-                            {/* Node button */}
-                            <button
-                                className={`map-node${ch.status === "locked" ? " map-node--locked" : ""}${isOpen ? " map-node--active" : ""}`}
-                                style={{
-                                    backgroundColor: nodeBg,
-                                    borderColor: nodeBorder,
-                                    color: nodeColor,
-                                    boxShadow: ch.status !== "locked"
-                                        ? `0 0 0 ${isOpen ? "8px" : "4px"} ${glowColor}`
-                                        : "none",
-                                }}
-                                onClick={() => ch.status !== "locked" && setActive(p => p === ch.id ? null : ch.id)}
-                                disabled={ch.status === "locked"}
-                            >
-                                {ch.status === "completed" && <i className="ph-bold ph-check" style={{ fontSize: 26 }} />}
-                                {ch.status === "current" && <i className={`ph-fill ${ch.icon}`} style={{ fontSize: 26 }} />}
-                                {ch.status === "locked" && <i className="ph-fill ph-lock" style={{ fontSize: 22 }} />}
-                                {ch.status === "current" && <span className="map-node-pulse" />}
-                            </button>
-
-                            {/* Info card */}
-                            <div className={`map-info-card map-info-card--${ch.status}${isOpen ? " map-info-card--open" : ""}`}>
-                                <div className="map-stop-num">CHAPTER {ch.id}</div>
-                                <div className="map-stop-title">{ch.title}</div>
-                                {ch.status !== "locked" && (
-                                    <div className="map-stop-meta">
-                                        <i className="ph ph-book-open" /> {ch.lessons} lessons
-                                        <span className="map-dot"> · </span>
-                                        <i className="ph ph-clock" /> {ch.minutes}m
+                            {/* Quiz CTA */}
+                            <div className="mdp-quiz-cta">
+                                {activeCh.status === "completed" && (
+                                    <div className="mdp-quiz-row">
+                                        <div className="mdp-quiz-score">
+                                            <i className="ph-fill ph-trophy" style={{ color: "#f59e0b" }} />
+                                            Quiz Score: <strong>{activeCh.quizScore}%</strong>
+                                        </div>
+                                        <button className="btn-mdp-primary">Retake Quiz</button>
                                     </div>
                                 )}
-                                {isOpen && (
-                                    <div className="map-stop-detail">
-                                        <p>{ch.description}</p>
-                                        <div className="map-stop-actions">
-                                            {ch.status === "completed" && <>
-                                                <button className="btn-map-secondary">Review</button>
-                                                {ch.quizScore != null && <span className="map-quiz-badge">Quiz {ch.quizScore}%</span>}
-                                            </>}
-                                            {ch.status === "current" && (
-                                                <button className="btn-map-primary">Continue →</button>
-                                            )}
-                                        </div>
+                                {activeCh.status === "current" && (
+                                    <button
+                                        className={`btn-mdp-quiz-full${!allRead ? " btn-mdp-quiz-locked" : ""}`}
+                                        disabled={!allRead}
+                                    >
+                                        {allRead
+                                            ? <><i className="ph-fill ph-clipboard-text" /> Start Chapter Quiz</>
+                                            : <><i className="ph-fill ph-lock" /> Read all articles to unlock quiz</>
+                                        }
+                                    </button>
+                                )}
+                                {activeCh.status === "locked" && (
+                                    <div className="mdp-locked-msg">
+                                        <i className="ph-fill ph-lock" />
+                                        Complete the previous chapter to unlock this content.
                                     </div>
                                 )}
                             </div>
 
                         </div>
-                    );
-                })}
+                    ) : (
+                        <div className="mdp-empty">
+                            <i className="ph-fill ph-map-pin" style={{ fontSize: 40, color: "#cbd5e1" }} />
+                            <p>Select a chapter on the map to see its details.</p>
+                        </div>
+                    )}
+                </div>
+
             </div>
         </div>
     );
