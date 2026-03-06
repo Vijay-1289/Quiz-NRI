@@ -9,7 +9,7 @@ export default function Settings() {
         <div>
             <div className="dashboard-header">
                 <h1 className="dashboard-title">Settings</h1>
-                <p className="dashboard-subtitle">Manage your account preferences and subscription.</p>
+                <p className="dashboard-subtitle">Manage your account preferences.</p>
             </div>
             <div className="card">
                 {session ? (

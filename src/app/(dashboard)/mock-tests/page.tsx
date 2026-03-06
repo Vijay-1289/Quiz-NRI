@@ -6,7 +6,7 @@ export default function MockTests() {
                 <p className="dashboard-subtitle">Practice interviews and analyze your results.</p>
             </div>
             <div className="card">
-                <p>You have 8 mock tests remaining this month.</p>
+                <p>No mock tests taken yet. Your results will appear here once you complete a test.</p>
             </div>
         </div>
     );

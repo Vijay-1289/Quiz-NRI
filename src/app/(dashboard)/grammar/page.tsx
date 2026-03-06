@@ -6,7 +6,7 @@ export default function Grammar() {
                 <p className="dashboard-subtitle">Master English sentence structure and rules.</p>
             </div>
             <div className="card">
-                <p>Your next lesson is Conditionals (Part 2).</p>
+                <p>No grammar lessons started yet. Your progress will appear here once you begin.</p>
             </div>
         </div>
     );
