@@ -127,25 +127,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="footer">
         <div className="container">
-          <div className="footer-grid">
-            <div className="footer-brand">
-              <Link href="/" className="logo">
-                <div className="logo-icon">
-                  <i className="ph-fill ph-graduation-cap"></i>
-                </div>
-                <span>Interview Ready</span>
-              </Link>
-              <p className="brand-desc">Empowering tech professionals with the communication skills needed to excel in global corporate environments.</p>
-              <div className="social-links">
-                <Link href="#" className="social-icon"><i className="ph ph-globe"></i></Link>
-                <Link href="#" className="social-icon"><i className="ph ph-at"></i></Link>
-                <Link href="#" className="social-icon"><i className="ph ph-share-network"></i></Link>
-              </div>
-            </div>
-
-
-          </div>
-
+          
           <div className="footer-bottom">
             <p>&copy; 2024 Interview Ready English Learning. All rights reserved.</p>
             <div className="footer-bottom-links">
