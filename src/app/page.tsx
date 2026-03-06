@@ -38,14 +38,6 @@ export default function Home() {
               <Link href="#" className="btn btn-dark btn-lg">Get Started Free</Link>
               <Link href="#" className="btn btn-outline btn-lg"><i className="ph-fill ph-play-circle"></i> See How It Works</Link>
             </div>
-            <div className="social-proof">
-              <div className="avatar-group">
-                <div className="avatar" style={{ backgroundColor: "#cbd5e1" }}></div>
-                <div className="avatar" style={{ backgroundColor: "#94a3b8", marginLeft: "-12px" }}></div>
-                <div className="avatar" style={{ backgroundColor: "#64748b", marginLeft: "-12px" }}></div>
-              </div>
-              <span className="social-text">Joined by 10,000+ developers</span>
-            </div>
           </div>
 
           <div className="hero-image-wrapper">
@@ -103,12 +95,41 @@ export default function Home() {
       <section className="partners bg-light">
         <div className="container">
           <h4 className="partners-title">FOCUSING ON SUCCESS AT TOP GLOBAL FIRMS</h4>
-          <div className="partners-logos">
-            <div className="partner"><div className="circle"></div> <span>TCS</span></div>
-            <div className="partner"><div className="circle"></div> <span>Wipro</span></div>
-            <div className="partner"><div className="circle"></div> <span>Infosys</span></div>
-            <div className="partner"><div className="circle"></div> <span>Accenture</span></div>
-            <div className="partner"><div className="circle"></div> <span>Cognizant</span></div>
+          <div className="marquee-wrapper">
+            <div className="marquee-track">
+              {/* First set */}
+              <div className="marquee-logo-card">
+                <Image src="/logos/tcs.svg" alt="TCS" width={120} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/wipro.svg" alt="Wipro" width={110} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/infosys.svg" alt="Infosys" width={130} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/accenture.svg" alt="Accenture" width={140} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/cognizant.svg" alt="Cognizant" width={140} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              {/* Duplicate set for seamless loop */}
+              <div className="marquee-logo-card">
+                <Image src="/logos/tcs.svg" alt="TCS" width={120} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/wipro.svg" alt="Wipro" width={110} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/infosys.svg" alt="Infosys" width={130} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/accenture.svg" alt="Accenture" width={140} height={48} style={{ objectFit: "contain" }} />
+              </div>
+              <div className="marquee-logo-card">
+                <Image src="/logos/cognizant.svg" alt="Cognizant" width={140} height={48} style={{ objectFit: "contain" }} />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -127,7 +148,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="footer">
         <div className="container">
-          
+
           <div className="footer-bottom">
             <p>&copy; 2024 Interview Ready English Learning. All rights reserved.</p>
             <div className="footer-bottom-links">
