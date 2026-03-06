@@ -81,8 +81,7 @@ export default function DashboardLayout({
                             />
                         </div>
                         <div className="user-info">
-                            <span className="user-name">{session?.user?.name || "Premium User"}</span>
-                            <span className="user-role">Premium Member</span>
+                            <span className="user-name">{session?.user?.name || "User"}</span>
                         </div>
                     </div>
                     <button
