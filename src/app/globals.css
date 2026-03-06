@@ -1935,14 +1935,337 @@ ul {
   transform: translateY(-1px);
 }
 
-/* =====================
-   JOURNEY MAP PAGE
-   ===================== */
+/* =============================
+   JOURNEY MAP PAGE  (v2 — single SVG + absolute nodes)
+   ============================= */
 
 .map-page {
   max-width: 780px;
-  margin: 0 auto;
   padding-bottom: 80px;
+}
+
+/* Header */
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 48px;
+  gap: 24px;
+}
+
+.map-page-title {
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--primary-dark);
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+}
+
+.map-page-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* Progress ring pill */
+.map-progress-pill {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.map-progress-pill-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.map-progress-stat {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary-dark);
+}
+
+.map-progress-stat span {
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.map-progress-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.map-progress-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-progress-ring-inner {
+  width: 42px;
+  height: 42px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+/* ── Journey outer container ──
+   height is set inline by JS; everything inside is absolutely positioned */
+.map-journey-outer {
+  position: relative;
+  width: 700px;
+  overflow: visible;
+}
+
+/* SVG sits at 0,0, covers the whole layout grid, pointer-events off */
+.map-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* START / FINISH badges */
+.map-badge {
+  position: absolute;
+  background: var(--primary-dark);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.map-badge--finish {
+  background: #16a34a;
+}
+
+/* ── Chapter stop wrapper ──
+   Positioned absolutely so button centre == SVG node coordinate.
+   Uses flex to place button + card side-by-side. */
+.map-stop {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1;
+}
+
+/* Left stops (even index): card appears to the RIGHT of the button */
+.map-stop--left {
+  flex-direction: row;
+}
+
+/* Right stops (odd index): card appears to the LEFT of the button */
+.map-stop--right {
+  flex-direction: row-reverse;
+}
+
+/* ── Chapter node button ── */
+.map-node {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  outline: none;
+  z-index: 2;
+}
+
+.map-node:not(.map-node--locked):hover {
+  transform: scale(1.1);
+}
+
+.map-node--locked {
+  cursor: not-allowed;
+}
+
+.map-node--active {
+  transform: scale(1.12);
+}
+
+/* Continuous pulse ring on current chapter */
+.map-node-pulse {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 3px solid rgba(15, 23, 42, 0.28);
+  animation: map-pulse 1.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes map-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+/* ── Chapter info card ── */
+.map-info-card {
+  width: 280px;
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.map-info-card--current {
+  border-color: var(--primary-dark);
+  border-width: 2px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1);
+}
+
+.map-info-card--locked {
+  background: #f8fafc;
+  opacity: 0.6;
+}
+
+.map-info-card--open {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.map-stop-num {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.map-stop-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.map-info-card--locked .map-stop-title {
+  color: #94a3b8;
+}
+
+.map-stop-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.map-dot {
+  color: #cbd5e1;
+}
+
+/* Expand panel */
+.map-stop-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+  animation: fadeSlideIn 0.2s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.map-stop-detail p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.map-stop-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-map-primary {
+  padding: 8px 18px;
+  background: var(--primary-dark);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-map-primary:hover {
+  background: #1e293b;
+}
+
+.btn-map-secondary {
+  padding: 8px 16px;
+  background: white;
+  color: var(--primary-dark);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-map-secondary:hover {
+  background: var(--bg-light);
+}
+
+.map-quiz-badge {
+  padding: 6px 12px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* ── Header ── */
