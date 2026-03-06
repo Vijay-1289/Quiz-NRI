@@ -13,11 +13,7 @@ export default function Home() {
             </div>
             <span>Interview Ready</span>
           </Link>
-          <nav className="nav-links">
-            <Link href="#">Home</Link>
-            <Link href="#">Features</Link>
-            <Link href="#">Our Focus</Link>
-          </nav>
+
           <Link href="/login" className="btn btn-dark">Login</Link>
         </div>
       </header>
@@ -147,34 +143,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="footer-links">
-              <div className="link-column">
-                <h4>PLATFORM</h4>
-                <ul>
-                  <li><Link href="#">Courses</Link></li>
-                  <li><Link href="#">Mock Tests</Link></li>
-                  <li><Link href="#">Pricing</Link></li>
-                  <li><Link href="#">Success Stories</Link></li>
-                </ul>
-              </div>
-              <div className="link-column">
-                <h4>COMPANY</h4>
-                <ul>
-                  <li><Link href="#">About Us</Link></li>
-                  <li><Link href="#">Careers</Link></li>
-                  <li><Link href="#">Blog</Link></li>
-                  <li><Link href="#">Contact</Link></li>
-                </ul>
-              </div>
-              <div className="link-column">
-                <h4>LEGAL</h4>
-                <ul>
-                  <li><Link href="#">Privacy Policy</Link></li>
-                  <li><Link href="#">Terms of Service</Link></li>
-                  <li><Link href="#">Cookie Policy</Link></li>
-                </ul>
-              </div>
-            </div>
+
           </div>
 
           <div className="footer-bottom">
