@@ -27,10 +27,15 @@ export default function DashboardLayout({
             <aside className="sidebar">
                 <div className="logo">
                     <div className="logo-top">
-                        <div className="logo-icon scale-75">
-                            <i className="ph-fill ph-graduation-cap"></i>
+                        <div className="logo-icon logo-icon-ss scale-75">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+                                <path d="M12 2C6.477 2 2 6.021 2 11c0 2.5 1.059 4.764 2.757 6.4L4 21l4.077-1.33A10.07 10.07 0 0 0 12 20c5.523 0 10-4.021 10-9S17.523 2 12 2Z" fill="white" />
+                                <rect x="7" y="14" width="2" height="3" rx="1" fill="#2563eb" />
+                                <rect x="11" y="11" width="2" height="6" rx="1" fill="#2563eb" />
+                                <rect x="15" y="8" width="2" height="9" rx="1" fill="#2563eb" />
+                            </svg>
                         </div>
-                        <span>Interview Ready</span>
+                        <span>Skills Speak</span>
                     </div>
                     <div className="logo-sub">English Platform</div>
                 </div>
