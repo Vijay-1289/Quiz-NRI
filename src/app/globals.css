@@ -1528,3 +1528,792 @@ ul {
   bottom: -200px;
   z-index: 0;
 }
+
+/* =====================
+   MY COURSES PAGE
+   ===================== */
+
+.courses-page {
+  max-width: 860px;
+}
+
+/* Header */
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 48px;
+  gap: 32px;
+}
+
+.courses-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+
+.courses-subtitle {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* Progress Summary */
+.courses-progress-summary {
+  min-width: 200px;
+  flex-shrink: 0;
+}
+
+.cp-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cp-percent {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.cp-bar-track {
+  width: 100%;
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.cp-bar-fill {
+  height: 100%;
+  background-color: var(--primary-dark);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.cp-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---- Chapter Timeline ---- */
+.chapter-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.chapter-row {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Timeline node column */
+.chapter-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.chapter-node-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.chapter-node-icon--completed {
+  background-color: #22c55e;
+  color: white;
+}
+
+.chapter-node-icon--in-progress {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+.chapter-node-icon--locked {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+}
+
+.chapter-node-line {
+  width: 2px;
+  flex: 1;
+  min-height: 32px;
+}
+
+.chapter-node-line--done {
+  background-color: #22c55e;
+}
+
+.chapter-node-line--pending {
+  background-color: #e2e8f0;
+}
+
+/* Chapter card */
+.chapter-card {
+  flex: 1;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.chapter-card--active {
+  border-color: var(--primary-dark);
+  border-width: 2px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1);
+}
+
+.chapter-card--locked {
+  opacity: 0.7;
+  background-color: #f8fafc;
+}
+
+.chapter-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chapter-status-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge--completed {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.badge--in-progress {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.badge--locked {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+}
+
+.chapter-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.chapter-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 14px;
+}
+
+.chapter-card--locked .chapter-title {
+  color: #94a3b8;
+}
+
+/* Topics list (completed chapters) */
+.chapter-topics {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.chapter-topics li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* Completed actions row */
+.chapter-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-chapter-secondary {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  color: var(--primary-dark);
+  transition: var(--transition);
+}
+
+.btn-chapter-secondary:hover {
+  background-color: var(--bg-gray);
+}
+
+.quiz-score-badge {
+  padding: 7px 14px;
+  border-radius: 8px;
+  background-color: #dcfce7;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Lesson list (in-progress chapters) */
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lesson-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.lesson-item--current {
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+}
+
+.lesson-item--done,
+.lesson-item--locked {
+  background: transparent;
+}
+
+.lesson-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.lesson-item--locked .lesson-item-left {
+  color: #94a3b8;
+}
+
+.lesson-tag {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.lesson-tag--done {
+  color: #22c55e;
+  background: transparent;
+}
+
+.lesson-tag--resume {
+  background-color: var(--primary-dark);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.lesson-tag--resume:hover {
+  background-color: #1e293b;
+}
+
+/* Chapter quiz row */
+.lesson-quiz-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 8px;
+}
+
+.btn-chapter-quiz {
+  padding: 10px 20px;
+  background-color: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-chapter-quiz:hover {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+/* Locked hint */
+.chapter-lock-hint {
+  font-size: 13px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* CTA Banner */
+.courses-cta {
+  position: relative;
+  background-color: var(--primary-dark);
+  border-radius: var(--radius-md);
+  padding: 48px;
+  color: white;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.courses-cta-circle {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  right: -60px;
+  bottom: -80px;
+}
+
+.courses-cta h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.courses-cta p {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.btn-cta-white {
+  padding: 12px 24px;
+  background-color: white;
+  color: var(--primary-dark);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cta-white:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+/* =====================
+   JOURNEY MAP PAGE
+   ===================== */
+
+.map-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+/* ── Header ── */
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 48px;
+  gap: 24px;
+}
+
+.map-page-title {
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--primary-dark);
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+}
+
+.map-page-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* Progress ring pill */
+.map-progress-pill {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.map-progress-pill-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.map-progress-stat {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary-dark);
+}
+
+.map-progress-stat span {
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.map-progress-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.map-progress-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-progress-ring-inner {
+  width: 42px;
+  height: 42px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+/* ── Journey container ── */
+.map-journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Bezier SVG connector ── */
+.map-connector {
+  width: 100%;
+  max-width: 420px;
+  height: 80px;
+}
+
+.map-connector svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Stop wrapper ── */
+.map-stop-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Stop row (left or right) ── */
+.map-stop-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.map-stop-row--left {
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 40px;
+}
+
+.map-stop-row--right {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  padding-right: 40px;
+}
+
+/* ── Chapter node bubble ── */
+.map-node {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.map-node:not(.map-node--locked):hover {
+  transform: scale(1.1);
+}
+
+.map-node--locked {
+  cursor: not-allowed;
+}
+
+.map-node--active {
+  transform: scale(1.12);
+}
+
+/* Pulse ring for current chapter */
+.map-node-pulse {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 3px solid rgba(15, 23, 42, 0.3);
+  animation: map-pulse 1.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes map-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* ── Stop info card ── */
+.map-stop-card {
+  flex: 1;
+  max-width: 360px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+
+.map-stop-card--current {
+  border-color: var(--primary-dark);
+  border-width: 2px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1);
+}
+
+.map-stop-card--locked {
+  background: #f8fafc;
+  opacity: 0.65;
+}
+
+.map-stop-card--open {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.map-stop-num {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.map-stop-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.map-stop-card--locked .map-stop-title {
+  color: #94a3b8;
+}
+
+.map-stop-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.map-dot {
+  color: #cbd5e1;
+}
+
+/* Expanded detail panel */
+.map-stop-detail {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+  animation: fadeSlideIn 0.2s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.map-stop-detail p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.map-stop-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-map-primary {
+  padding: 8px 18px;
+  background: var(--primary-dark);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-map-primary:hover {
+  background: #1e293b;
+}
+
+.btn-map-secondary {
+  padding: 8px 16px;
+  background: white;
+  color: var(--primary-dark);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-map-secondary:hover {
+  background: var(--bg-light);
+}
+
+.map-quiz-badge {
+  padding: 6px 12px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── START / FINISH flags ── */
+.map-flag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  z-index: 1;
+}
+
+.map-flag-pole {
+  display: flex;
+  align-items: flex-start;
+}
+
+.map-flag-banner {
+  background: var(--primary-dark);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 6px 16px;
+  border-radius: 6px 6px 6px 0;
+  position: relative;
+}
+
+.map-flag-banner::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  border-top: 8px solid var(--primary-dark);
+  border-right: 8px solid transparent;
+}
+
+.map-flag-banner--finish {
+  background: #16a34a;
+  border-radius: 6px 6px 6px 0;
+}
+
+.map-flag-banner--finish::after {
+  border-top-color: #16a34a;
+}
+
+.map-flag-base {
+  width: 3px;
+  height: 40px;
+  background: #cbd5e1;
+  border-radius: 2px;
+  margin-left: 0px;
+}
+
+.map-flag--start {
+  margin-bottom: 4px;
+}
+
+.map-flag--finish {
+  margin-top: 4px;
+}
