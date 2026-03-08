@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+
 
 // ── Layout constants ─────────────────────────────────────────────────────────
 const SVG_W = 380;
@@ -302,7 +304,9 @@ export default function MyCourses() {
                             </div>
                             <div className="mdp-blog-list">
                                 {activeCh.blogs.map((blog, bi) => (
-                                    <div key={bi} className={`mdp-blog-item${blog.read ? " mdp-blog-item--read" : ""}`}>
+                                    <Link key={bi}
+                                        href={`/my-courses/blog/${activeCh.id}/${bi + 1}`}
+                                        className={`mdp-blog-item${blog.read ? " mdp-blog-item--read" : ""}`}>
                                         <div className="mdp-blog-left">
                                             {blog.read
                                                 ? <i className="ph-fill ph-check-circle mdp-icon-done" />
@@ -310,8 +314,8 @@ export default function MyCourses() {
                                             }
                                             <span className="mdp-blog-title">{blog.title}</span>
                                         </div>
-                                        <span className="mdp-blog-time">{blog.readTime}</span>
-                                    </div>
+                                        <span className="mdp-blog-time">{blog.readTime} <i className="ph ph-arrow-right" style={{ fontSize: 11 }} /></span>
+                                    </Link>
                                 ))}
                             </div>
 
@@ -323,19 +327,19 @@ export default function MyCourses() {
                                             <i className="ph-fill ph-trophy" style={{ color: "#f59e0b" }} />
                                             Quiz Score: <strong>{activeCh.quizScore}%</strong>
                                         </div>
-                                        <button className="btn-mdp-primary">Retake Quiz</button>
+                                        <Link href={`/my-courses/quiz/${activeCh.id}`} className="btn-mdp-primary">
+                                            Retake Quiz
+                                        </Link>
                                     </div>
                                 )}
                                 {activeCh.status === "current" && (
-                                    <button
-                                        className={`btn-mdp-quiz-full${!allRead ? " btn-mdp-quiz-locked" : ""}`}
-                                        disabled={!allRead}
-                                    >
-                                        {allRead
-                                            ? <><i className="ph-fill ph-clipboard-text" /> Start Chapter Quiz</>
-                                            : <><i className="ph-fill ph-lock" /> Read all articles to unlock quiz</>
-                                        }
-                                    </button>
+                                    allRead
+                                        ? <Link href={`/my-courses/quiz/${activeCh.id}`} className="btn-mdp-quiz-full">
+                                            <i className="ph-fill ph-clipboard-text" /> Start Chapter Quiz
+                                        </Link>
+                                        : <button className="btn-mdp-quiz-full btn-mdp-quiz-locked" disabled>
+                                            <i className="ph-fill ph-lock" /> Read all articles to unlock quiz
+                                        </button>
                                 )}
                                 {activeCh.status === "locked" && (
                                     <div className="mdp-locked-msg">
