@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
-type Theme = "light" | "dark" | "system";
-
 const GOALS = [
     "Get a job in an MNC",
     "Improve spoken English",
@@ -19,21 +17,9 @@ const TARGETS = [
     "2 hours / day",
 ];
 
-function applyTheme(theme: Theme) {
-    const root = document.documentElement;
-    if (theme === "system") {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        root.setAttribute("data-theme", prefersDark ? "dark" : "light");
-    } else {
-        root.setAttribute("data-theme", theme);
-    }
-    localStorage.setItem("ss-theme", theme);
-}
-
 export default function SettingsPage() {
     const { data: session } = useSession();
 
-    const [theme, setTheme] = useState<Theme>("light");
     const [goal, setGoal] = useState(GOALS[0]);
     const [target, setTarget] = useState(TARGETS[0]);
     const [name, setName] = useState("");
@@ -42,23 +28,14 @@ export default function SettingsPage() {
 
     // Load saved prefs on mount
     useEffect(() => {
-        const savedTheme = (localStorage.getItem("ss-theme") as Theme) || "light";
         const savedGoal = localStorage.getItem("ss-goal") || GOALS[0];
         const savedTarget = localStorage.getItem("ss-target") || TARGETS[0];
         const savedName = localStorage.getItem("ss-name") || session?.user?.name || "";
-        setTheme(savedTheme);
         setGoal(savedGoal);
         setTarget(savedTarget);
         setName(savedName);
-        applyTheme(savedTheme);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    // Apply theme in real time as picker changes
-    function handleTheme(t: Theme) {
-        setTheme(t);
-        applyTheme(t);
-    }
 
     function handleSave() {
         localStorage.setItem("ss-goal", goal);
@@ -67,12 +44,6 @@ export default function SettingsPage() {
         setSaved(true);
         setTimeout(() => setSaved(false), 2500);
     }
-
-    const themeOptions: { value: Theme; icon: string; label: string; desc: string }[] = [
-        { value: "light", icon: "☀️", label: "Light", desc: "Clean & bright" },
-        { value: "dark", icon: "🌙", label: "Dark", desc: "Easy on eyes" },
-        { value: "system", icon: "💻", label: "System", desc: "Follow device" },
-    ];
 
     return (
         <div className="settings-page">
@@ -167,55 +138,6 @@ export default function SettingsPage() {
                                 </div>
                             </div>
                         )}
-                    </div>
-                </div>
-
-                {/* ── RIGHT: Appearance ── */}
-                <div className="settings-col">
-                    <div className="settings-card">
-                        <div className="sc-title">🎨 Appearance</div>
-                        <div className="sc-divider" />
-
-                        <div className="settings-field-label">Theme — changes instantly ✨</div>
-                        <div className="theme-picker">
-                            {themeOptions.map(opt => (
-                                <button
-                                    key={opt.value}
-                                    className={`theme-card${theme === opt.value ? " theme-card--active" : ""}`}
-                                    onClick={() => handleTheme(opt.value)}
-                                >
-                                    <span className="theme-card-icon">{opt.icon}</span>
-                                    <span className="theme-card-label">{opt.label}</span>
-                                    <span className="theme-card-desc">{opt.desc}</span>
-                                    {theme === opt.value && (
-                                        <div className="theme-card-check">
-                                            <i className="ph-fill ph-check-circle" />
-                                        </div>
-                                    )}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Live preview swatch */}
-                        <div className="theme-preview">
-                            <div className="theme-preview-bar">
-                                <div className="tp-dot tp-dot--red" />
-                                <div className="tp-dot tp-dot--yellow" />
-                                <div className="tp-dot tp-dot--green" />
-                                <span className="tp-label">skillsspeak.netlify.app</span>
-                            </div>
-                            <div className="theme-preview-body">
-                                <div className="tp-sidebar" />
-                                <div className="tp-content">
-                                    <div className="tp-card tp-card--a" />
-                                    <div className="tp-card tp-card--b" />
-                                    <div className="tp-card tp-card--c" />
-                                </div>
-                            </div>
-                        </div>
-                        <p className="settings-hint" style={{ textAlign: "center", marginTop: 8 }}>
-                            🎨 Theme applies across the whole app instantly
-                        </p>
                     </div>
                 </div>
 

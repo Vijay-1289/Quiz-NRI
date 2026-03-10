@@ -64,13 +64,6 @@ export default function DashboardLayout({
                         <i className={`${pathname === "/settings" ? "ph-fill" : "ph"} ph-gear`}></i>
                         Settings
                     </Link>
-                    <Link
-                        href="/profile"
-                        className={`nav-item ${pathname === "/profile" ? "active" : ""}`}
-                    >
-                        <i className={`${pathname === "/profile" ? "ph-fill" : "ph"} ph-user`}></i>
-                        Profile
-                    </Link>
                     <div className="user-profile">
                         <div className="user-avatar" style={{ position: 'relative', width: '40px', height: '40px' }}>
                             <Image

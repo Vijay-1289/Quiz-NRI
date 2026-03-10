@@ -20,6 +20,7 @@ export interface BlogArticle {
     category: string;
     hero: string;         // image path key
     sections: BlogSection[];
+    quiz: QuizQuestion[];
 }
 
 export interface QuizQuestion {
@@ -38,175 +39,141 @@ export interface ChapterData {
     lessonProgress: number;
     quizScore?: number;
     articles: BlogArticle[];
-    quiz: QuizQuestion[];
 }
 
-// ── Chapter 1 ─────────────────────────────────────────────────────────────────
-const chapter1: ChapterData = {
-    id: 1, title: "The Art of Introduction", subject: "Self-Introduction Mastery",
-    status: "completed", lessonProgress: 100, quizScore: 92,
-    articles: [
-        {
-            id: 1, slug: "first-30-seconds",
-            title: "Why Your First 30 Seconds Matter Most",
-            readTime: "4 min", category: "First Impressions",
-            hero: "intro",
-            sections: [
-                { type: "paragraph", content: "Research shows that people form lasting judgments within the first 7 seconds of meeting someone. In a professional setting — an interview, a networking event, or a first day at work — those seconds can define the entire relationship." },
-                { type: "heading", content: "The Science of First Impressions" },
-                { type: "paragraph", content: "When you walk into a room, your body language, tone of voice, and opening words all fire simultaneously in the listener's brain. This is called the 'halo effect' — a positive first impression causes people to view everything you say afterward in a more favorable light." },
-                {
-                    type: "conversation",
-                    label: "❌ Weak Introduction",
-                    lines: [
-                        { speaker: "Candidate", text: "Uhh... so my name is Ravi. I studied engineering. I want to work here." },
-                        { speaker: "Interviewer", text: "Okay... and why this role specifically?" },
-                        { speaker: "Candidate", text: "Because... I don't know, it seemed good." },
-                    ],
-                },
-                {
-                    type: "conversation",
-                    label: "✅ Strong Introduction",
-                    lines: [
-                        { speaker: "Candidate", text: "Good morning! I'm Ravi, a software engineer with three years of experience building scalable APIs at Infosys. I'm excited about this role because your team is solving exactly the kind of distributed systems challenges I find most energizing." },
-                        { speaker: "Interviewer", text: "That's a great overview — tell me more about the API work." },
-                    ],
-                },
-                { type: "tip", label: "💡 Pro Tip", content: "Use the P-P-F formula: your Present role, your Past achievement, and why you're excited about the Future at this company. Keep it under 45 seconds." },
-                { type: "heading", content: "Your Energy Sets the Tone" },
-                { type: "paragraph", content: "Even on a video call, your energy is contagious. Sit up straight, look into the camera (not at the screen), and smile before you start speaking. The interviewer will mirror your energy within seconds." },
-            ],
-        },
-        {
-            id: 2, slug: "elevator-pitch",
-            title: "Crafting the Perfect Elevator Pitch",
-            readTime: "6 min", category: "Communication",
-            hero: "intro",
-            sections: [
-                { type: "paragraph", content: "An elevator pitch is a concise, compelling summary of who you are and what you offer — short enough to deliver in a 30-second elevator ride. The best pitches feel natural, not rehearsed." },
-                { type: "heading", content: "The Three-Part Structure" },
+// ── Dynamic Mock Course Data ──────────────────────────────────────────────────
+const syllabus = [
+    {
+        id: 1, title: "Grammar", subject: "English Grammar",
+        status: "current" as Status, lessonProgress: 0, quizScore: 0,
+        topics: [
+            "Subject and Verb Agreement- Rules", "Tenses", "Articles",
+            "Verb Forms", "If- Conditionals", "Question Tags",
+            "Prepositions & Conjunctions", "Grammar Rules", "Error Identification"
+        ]
+    },
+    {
+        id: 2, title: "Communication", subject: "Reading & Reasoning",
+        status: "locked" as Status, lessonProgress: 0,
+        topics: [
+            "Reading Comprehension", "Passage Ordering", "Sentence Ordering",
+            "Critical Reasoning", "Phrasal Verbs", "Idiomatic Expressions"
+        ]
+    },
+    {
+        id: 3, title: "Vocabulary", subject: "Words & Usage",
+        status: "locked" as Status, lessonProgress: 0,
+        topics: [
+            "Synonyms", "Antonyms", "Prefixes-Suffixes",
+            "Root words", "Analogies", "Spellings"
+        ]
+    },
+    {
+        id: 4, title: "Written", subject: "Writing Skills",
+        status: "locked" as Status, lessonProgress: 0,
+        topics: [
+            "Essay Writing", "Letter Writing", "Memo Writing", "Resume Writing"
+        ]
+    }
+];
+
+const topicsWithImages = [
+    { name: "Grammar", url: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&auto=format&fit=crop&q=80" },
+    { name: "Communication", url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&auto=format&fit=crop&q=80" },
+    { name: "Vocabulary", url: "https://images.unsplash.com/photo-1546410531-bdaee179975b?w=1200&auto=format&fit=crop&q=80" },
+    { name: "Written", url: "https://images.unsplash.com/photo-1455390582262-044cdead27d8?w=1200&auto=format&fit=crop&q=80" }
+];
+
+export function shuffleArray<T>(array: T[]): T[] {
+    const newArr = [...array];
+    for (let i = newArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+    }
+    return newArr;
+}
+
+export const allChapters: ChapterData[] = syllabus.map(ch => ({
+    id: ch.id,
+    title: ch.title,
+    subject: ch.subject,
+    status: ch.status,
+    lessonProgress: ch.lessonProgress,
+    quizScore: ch.quizScore,
+    articles: ch.topics.map((title, i) => {
+        const isFirstGrammar = ch.id === 1 && i === 0;
+        const heroUrl = topicsWithImages.find(t => t.name === ch.title)?.url ?? "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200";
+
+        return {
+            id: i + 1,
+            slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            title: title,
+            readTime: isFirstGrammar ? "8 min" : "5 min",
+            category: ch.title,
+            hero: heroUrl, // Passing the full URL here now instead of a lookup key
+            sections: isFirstGrammar ? [
+                { type: "heading", content: "Subject" },
+                { type: "paragraph", content: "About whom or what the sentence speaks is said to be the subject. The subject might be a word or phrase, and the verb should agree with the number of the subject." },
+                { type: "heading", content: "Verb" },
+                { type: "paragraph", content: "A word in a sentence which indicates the State of Being or State of action of a Noun or Pronoun is said to be a verb. There are five forms of Verbs:" },
                 {
                     type: "vocab", words: [
-                        { word: "Value proposition", def: "A clear statement of the benefit you bring to an employer." },
-                        { word: "Differentiator", def: "What makes you stand out from other candidates." },
-                        { word: "Call to action", def: "What you want the listener to do next (e.g., schedule an interview)." },
+                        { word: "Verb-base form", def: "write" },
+                        { word: "Verb-plural form", def: "writes" },
+                        { word: "Verb-present form", def: "writing" },
+                        { word: "Verb-past form", def: "wrote" },
+                        { word: "Verb-past participle form", def: "written" }
                     ]
                 },
-                {
-                    type: "conversation",
-                    label: "📝 Example: Networking Event",
-                    lines: [
-                        { speaker: "You", text: "Hi, I'm Priya! I'm a data analyst who specializes in turning messy sales data into dashboards that actually drive decisions. Last quarter I helped my team cut reporting time by 60%. I noticed your company just expanded to Southeast Asia — I'd love to chat about how data strategy might look there." },
-                        { speaker: "Manager", text: "That's impressive — do you have five minutes now?" },
-                    ],
-                },
-                { type: "tip", label: "🎯 Remember", content: "Your pitch should answer three questions: Who are you? What value do you offer? What do you want? Write it in 3 sentences, then practice until it feels like everyday speech." },
-            ],
-        },
-    ],
-    quiz: [
-        { id: 1, question: "Which formula helps structure a strong self-introduction?", options: ["P-P-F (Present, Past, Future)", "S-A-R (Situation, Action, Result)", "T-E-E (Topic, Evidence, Explain)", "A-B-C (Ability, Background, Confidence)"], correct: 0, explanation: "The P-P-F formula covers your Present role, a Past achievement, and why you are excited about the Future at this company." },
-        { id: 2, question: "Research shows people form lasting impressions in approximately how many seconds?", options: ["30 seconds", "7 seconds", "2 minutes", "15 seconds"], correct: 1, explanation: "Studies consistently show that first impressions form within 7 seconds — highlighting the importance of a confident, prepared opening." },
-        { id: 3, question: "When introducing yourself on a video call, where should you look?", options: ["At your own image on screen", "At the interviewer's face on screen", "Into the camera lens", "At your notes"], correct: 2, explanation: "Looking into the camera lens simulates eye contact for the viewer, which creates a stronger rapport than looking at the screen." },
-        { id: 4, question: "What is a 'value proposition' in the context of an elevator pitch?", options: ["The salary you expect", "A clear statement of the benefit you bring to an employer", "The list of your technical skills", "A description of your education"], correct: 1, explanation: "A value proposition communicates the specific benefit or outcome an employer gains by hiring you." },
-        { id: 5, question: "Which of the following is the best opening line for a job interview introduction?", options: ["I don't really know what to say...", "I'm just looking for any job right now.", "I'm Amit, a UX designer with 4 years of experience creating apps used by millions.", "Hi, I graduated last year and need experience."], correct: 2, explanation: "This opening immediately establishes name, role, experience level, and scale of impact — giving the interviewer a clear anchor." },
-    ],
-};
-
-// ── Chapter 2 ─────────────────────────────────────────────────────────────────
-const chapter2: ChapterData = {
-    id: 2, title: "Professional Vocabulary", subject: "Communication Skills",
-    status: "current", lessonProgress: 25,
-    articles: [
-        {
-            id: 1, slug: "industry-buzzwords",
-            title: "Top 50 Industry Buzzwords That Actually Matter",
-            readTime: "7 min", category: "Vocabulary",
-            hero: "vocab",
-            sections: [
-                { type: "paragraph", content: "Knowing the right buzzwords can make you sound like an insider — but only if you can use them naturally. The goal isn't to impress; it's to communicate precisely. These are the 10 most powerful buzzwords in MNC interviews today, with real conversation examples." },
-                { type: "heading", content: "1. Leverage" },
-                { type: "paragraph", content: 'Use "leverage" when describing how you used existing tools, skills, or networks to create a bigger outcome than expected.' },
-                {
-                    type: "conversation",
-                    label: "💬 In an Interview",
-                    lines: [
-                        { speaker: "Interviewer", text: "How did you manage the project with such a small team?" },
-                        { speaker: "You", text: "We leveraged our existing Jira workflows and automated the status reporting, which freed up about 5 hours per week per person." },
-                    ],
-                },
-                { type: "heading", content: "2. Stakeholder" },
-                { type: "paragraph", content: 'A "stakeholder" is anyone who has an interest in the outcome of a project — clients, managers, team members, even end users.' },
-                {
-                    type: "conversation",
-                    label: "💬 In a Team Meeting",
-                    lines: [
-                        { speaker: "Manager", text: "Who needs to approve this design change?" },
-                        { speaker: "You", text: "We should loop in all key stakeholders — the product owner, the QA lead, and the client's IT team — before we finalise anything." },
-                    ],
-                },
-                { type: "heading", content: "3. Bandwidth" },
-                { type: "paragraph", content: '"Bandwidth" in a workplace context means available time and capacity — not internet speed.' },
-                {
-                    type: "conversation",
-                    label: "💬 Declining a Task Politely",
-                    lines: [
-                        { speaker: "Colleague", text: "Can you take on the client report this week?" },
-                        { speaker: "You", text: "I'd love to help but I don't have the bandwidth right now — I'm finalising the Q3 deliverables. Can we revisit next week?" },
-                    ],
-                },
-                {
-                    type: "vocab",
-                    words: [
-                        { word: "Synergy", def: "The combined output of two groups working together is greater than each working alone." },
-                        { word: "Scalable", def: "A solution that continues to work effectively as it grows in size or usage." },
-                        { word: "Deep dive", def: "A detailed, thorough analysis of a specific topic or problem." },
-                        { word: "Agile", def: "A project methodology that emphasises flexibility, iteration, and collaboration." },
-                        { word: "KPI", def: "Key Performance Indicator — a measurable value that shows how effectively a goal is being achieved." },
-                    ],
-                },
-                { type: "tip", label: "⚠️ Avoid Buzzword Overload", content: 'Using too many buzzwords in one sentence sounds unnatural. Say "We used our existing tools to get more done" just as often as you say "We leveraged our resources." Mix formal and plain language.' },
-            ],
-        },
-        {
-            id: 2, slug: "action-verbs",
-            title: "Impactful Action Verbs for Every Situation",
-            readTime: "5 min", category: "Writing & Speaking",
-            hero: "vocab",
-            sections: [
-                { type: "paragraph", content: "Strong action verbs transform weak, vague descriptions into vivid, memorable ones. Instead of 'I was responsible for the project,' say 'I led, managed, and delivered the project on time.'" },
-                { type: "heading", content: "For Leadership" },
-                {
-                    type: "conversation",
-                    label: "💬 Resume vs. Interview — Leadership",
-                    lines: [
-                        { speaker: "Weak", text: "I was in charge of a team of 8 developers." },
-                        { speaker: "Strong", text: "I spearheaded a cross-functional team of 8 developers, orchestrating a 6-month product launch that exceeded targets by 20%." },
-                    ],
-                },
+                { type: "tip", label: "Note", content: "In some sentences, the auxiliary acts as the main verb. e.g., she is good." },
+                { type: "heading", content: "Auxiliaries" },
+                { type: "paragraph", content: "The Auxiliaries are divided into two types, i.e., Primary and Modal. The auxiliaries help in the grammatical construction of sentences." },
+                { type: "heading", content: "Primary Auxiliaries" },
+                { type: "paragraph", content: "They help in the grammatical construction of the sentences." },
                 {
                     type: "vocab", words: [
-                        { word: "Spearheaded", def: "Led or initiated a project or movement." },
-                        { word: "Orchestrated", def: "Planned and coordinated complex activities with multiple parts." },
-                        { word: "Championed", def: "Actively supported and fought for a cause or idea." },
-                        { word: "Streamlined", def: "Made a process simpler, faster, or more efficient." },
-                        { word: "Drove", def: "Caused or produced a result through direct effort." },
+                        { word: "To Be", def: "Present: am(I), is(HE, SHE, IT), are(WE, YOU, THEY) | Past: Was(I, HE, SHE, IT), were(WE, YOU, THEY)" },
+                        { word: "To Do", def: "Present: Do(I, WE, YOU, THEY), Does(HE, SHE, IT) | Past: Did-All Pronouns" },
+                        { word: "To Have", def: "Present: Have(I, WE, YOU, THEY), Has(HE, SHE, IT) | Past: Had-All Pronouns" }
                     ]
                 },
-                { type: "tip", label: "💡 Rule of Thumb", content: "Start every bullet point on your resume with a past-tense action verb. Start every interview answer with a present-tense action verb for current roles." },
+                { type: "heading", content: "Modal Auxiliaries" },
+                { type: "paragraph", content: "They help in formal and informal communication. They are: Can-Could, Will-would, May-might, Shall-should, Need, Dare, Ought, Must, Used to" },
+                { type: "heading", content: "Agreement Rules" },
+                { type: "paragraph", content: "1. The verb should agree in number with the subject.\ne.g. Laptop is essential for work enhancement. (Singular)\nLaptops are essential for work enhancement. (Plural)\nShe plays football very well.\nThey play football very well." },
+                { type: "tip", label: "Exception", content: "The pronoun ‘You’, either singular or plural, always requires a plural verb. You were helping a lot. Thank you." },
+                { type: "paragraph", content: "2. The verb should agree with its true subject but not with the intervening object or any other.\ne.g., The hive of bees is huge." },
+                { type: "paragraph", content: "3. Subjects joined by and are usually plural and take plural verbs.\ne.g., The teachers and students were participating in the contest.\nRaghu and Ram are good friends." },
+                { type: "tip", label: "Exception a", content: "If the two subjects are joined by and belong to the same person, the verb remains singular. e.g., Idli and Sambar is my favorite breakfast." },
+                { type: "tip", label: "Exception b", content: "If the two subjects connected by and are preceded by each, every, or many, a singular verb is used. e.g., Every girl and boy has to fill out the form immediately." },
+                { type: "paragraph", content: "4. Whenever you get words like with, together with, along with, besides, as well as, including, in addition to, etc., the verb takes according to the subject. If the subject is singular, it takes a singular verb, and in case a plural verb. If one verb is plural and the other verb is singular, the verb takes according to the second subject.\ne.g., The television, along with the cabinet, is to be sold.\nMrs. Paul, with her son and daughter, is going to the theatre this evening.\nOur chief competitor, as well as ourselves, is obliged to increase prices.\nBob and George are leaving.\nNeither Bob nor George is leaving.\nNeither Bob nor his friends are leaving." },
+                { type: "paragraph", content: "5. There and here are never subjects. In sentences that begin with these words, the subject is usually found later in the sentence.\nThere were five books on the shelf. (were, agrees with the subject books)\nHere is the report you wanted. (is agrees with the subject report)" },
+                { type: "paragraph", content: "6. Collective nouns may be singular or plural, depending on their use in the sentence. A collective noun is a noun used to name a whole group. Following are some common examples:\nArmy, audience, class, club, committee, crowd, flock, group, herd, jury\nOrchestra, public, swarm, team, troop, United States\nThe orchestra is playing a hit song. (Orchestra is considered as one unit—singular.)\nThe orchestra were asked to give their musical backgrounds. (Orchestra is considered as separate individuals—plural)" }
+            ] : [
+                { type: "paragraph", content: `This is the lesson content for ${title}. You will learn all the foundational rules and applications related to this topic.` },
+                { type: "heading", content: "Key Concepts" },
+                { type: "paragraph", content: "More detailed explanations and examples will be provided here in the full course." }
             ],
-        },
-    ],
-    quiz: [
-        { id: 1, question: "What does 'bandwidth' mean in a professional workplace context?", options: ["Internet connection speed", "Available time and capacity to take on work", "The size of a software project", "A measurement of team skill level"], correct: 1, explanation: "In office settings, 'bandwidth' means available capacity — time and mental energy — not internet speed." },
-        { id: 2, question: "Which sentence uses 'leverage' correctly in a professional context?", options: ["We leveraged the coffee machine every morning.", "We leveraged our CRM data to identify upsell opportunities worth ₹50L.", "The lever is an example of leverage in physics.", "Can you leverage me the stapler?"], correct: 1, explanation: "'Leverage' in a professional context means using an existing asset or resource to produce a greater outcome." },
-        { id: 3, question: "Which action verb best replaces 'was responsible for' on a resume?", options: ["Handled", "Managed", "Spearheaded", "Was around for"], correct: 2, explanation: "'Spearheaded' implies leadership and initiative — much stronger than the vague 'was responsible for.'" },
-        { id: 4, question: "A 'stakeholder' in a project is:", options: ["Only the client who pays for it", "Anyone who has an interest in the project's outcome", "The project manager", "A shareholder of the company"], correct: 1, explanation: "Stakeholders include anyone affected by or interested in the project — clients, team members, managers, end users." },
-        { id: 5, question: "What is a KPI?", options: ["Key Partnership Initiative", "Knowledge and Performance Index", "Key Performance Indicator", "Keyword Priority Integration"], correct: 2, explanation: "KPI stands for Key Performance Indicator — a measurable value showing how effectively a goal is achieved." },
-    ],
-};
-
-export const allChapters: ChapterData[] = [chapter1, chapter2];
+            quiz: isFirstGrammar ? [
+                { id: 1, question: "Your friend ____ too much.", options: ["talk", "talks", "talking", "is talk"], correct: 1, explanation: "Singular subject 'friend' takes singular verb 'talks'." },
+                { id: 2, question: "The man with the roses ____ like your brother.", options: ["look", "looks", "looking", "is look"], correct: 1, explanation: "Singular subject 'man' takes singular verb 'looks'." },
+                { id: 3, question: "The women in the pool _____ well.", options: ["swimming", "swims", "swim", "is swim"], correct: 2, explanation: "Plural subject 'women' takes plural verb 'swim'." },
+                { id: 4, question: "Bill ______ a cab.", options: ["drive", "drives", "driving", "is drive"], correct: 1, explanation: "Singular subject 'Bill' takes singular verb 'drives'." },
+                { id: 5, question: "The football players _____ five miles every day.", options: ["run", "runs", "running", "is run"], correct: 0, explanation: "Plural subject 'players' takes plural verb 'run'." },
+                { id: 6, question: "Here into the main ring of the circus ____ the trained elephants.", options: ["come", "comes", "comming", "coming"], correct: 0, explanation: "The subject 'elephants' is plural, so it takes the plural verb 'come'." },
+                { id: 7, question: "Either the workers or the boss _____ the merchandise.", options: ["delivers", "deliver", "delivering", "is deliver"], correct: 0, explanation: "When subjects are joined by 'or', the verb agrees with the closer subject ('boss' is singular)." },
+                { id: 8, question: "The committee ________ hard for better schools.", options: ["work", "working", "works", "is work"], correct: 2, explanation: "The collective noun 'committee' acting as a single unit takes a singular verb 'works'." },
+                { id: 9, question: "There ______ many things to do before the holidays.", options: ["is", "was", "are", "may"], correct: 2, explanation: "The subject 'things' is plural, so it takes the plural verb 'are'." },
+                { id: 10, question: "The jury _____ polled for their verdicts.", options: ["was", "were", "are", "can"], correct: 1, explanation: "The collective noun 'jury' acting as individuals takes a plural verb 'were'." },
+                { id: 11, question: "Each of the girls _____ good on skis.", options: ["look", "looks", "looking", "is look"], correct: 1, explanation: "The pronoun 'Each' is singular and requires a singular verb 'looks'." },
+                { id: 12, question: "Everybody ____ asked to remain quiet.", options: ["will", "were", "are", "was"], correct: 3, explanation: "The pronoun 'Everybody' is singular and requires a singular verb 'was'." }
+            ] : [
+                { id: 1, question: `Sample quiz question for ${title}?`, options: ["Option A", "Option B", "Option C", "Option D"], correct: 0, explanation: "Placeholder explanation." },
+                { id: 2, question: `Another quiz question for ${title}?`, options: ["Option A", "Option B", "Option C", "Option D"], correct: 1, explanation: "Placeholder explanation." }
+            ]
+        };
+    })
+}));
 
 export function getChapter(id: number): ChapterData | undefined {
     return allChapters.find(c => c.id === id);

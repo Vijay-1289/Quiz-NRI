@@ -2,14 +2,20 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChapterData } from "@/lib/courseData";
+import { ChapterData, BlogArticle, QuizQuestion, shuffleArray } from "@/lib/courseData";
 
-interface Props { chapter: ChapterData; }
+interface Props {
+    chapter: ChapterData;
+    article: BlogArticle;
+}
 
-export default function QuizClient({ chapter }: Props) {
-    const questions = chapter.quiz;
-    const total = questions.length;
+export default function QuizClient({ chapter, article }: Props) {
+    const total = article.quiz.length;
+    const articleIndex = chapter.articles.findIndex(a => a.id === article.id);
+    const nextArticle = articleIndex >= 0 && articleIndex < chapter.articles.length - 1 ? chapter.articles[articleIndex + 1] : null;
+    const isLastChapter = chapter.id === 4;
 
+    const [questions, setQuestions] = useState<QuizQuestion[]>([]);
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
     const [answers, setAnswers] = useState<(number | null)[]>(Array(total).fill(null));
@@ -18,10 +24,25 @@ export default function QuizClient({ chapter }: Props) {
     const [timeLeft, setTimeLeft] = useState(total * 90);
 
     useEffect(() => {
+        // Shuffle questions only once on mount to avoid hydration mismatch
+        setQuestions(shuffleArray(article.quiz));
+    }, [article.quiz]);
+
+    useEffect(() => {
         if (submitted) return;
         const t = setInterval(() => setTimeLeft(s => (s <= 1 ? 0 : s - 1)), 1000);
         return () => clearInterval(t);
     }, [submitted]);
+
+    useEffect(() => {
+        if (submitted) {
+            const scoreVal = answers.reduce((acc: number, a, i) => (a === questions[i].correct ? acc + 1 : acc), 0);
+            const pct = Math.round((scoreVal / total) * 100);
+            if (pct >= 70) {
+                localStorage.setItem(`quizPassed_${chapter.id}_${article.id}`, "true");
+            }
+        }
+    }, [submitted, answers, questions, total, chapter.id, article.id]);
 
     const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
     const ss = String(timeLeft % 60).padStart(2, "0");
@@ -58,7 +79,11 @@ export default function QuizClient({ chapter }: Props) {
         setCurrent(0);
         setTimeLeft(total * 90);
         setFlagged(Array(total).fill(false));
+        setQuestions(shuffleArray(article.quiz)); // re-shuffle on retake
     }
+
+    // Wait for client-side shuffle before rendering main UI
+    if (questions.length === 0) return <div style={{ padding: 40 }}>Loading quiz...</div>;
 
     // ── Results ───────────────────────────────────────────────────────────────
     if (submitted) {
@@ -101,7 +126,7 @@ export default function QuizClient({ chapter }: Props) {
 
                         {/* Text */}
                         <div className="qr-hero-text">
-                            <p className="qr-chapter-label">{chapter.title} · Chapter Quiz</p>
+                            <p className="qr-chapter-label">{chapter.title} · {article.title}</p>
                             <h1 className="qr-headline">{headline}</h1>
                             <p className="qr-hero-sub">
                                 {pass
@@ -146,9 +171,15 @@ export default function QuizClient({ chapter }: Props) {
                                 <button className="qr-btn-retake" onClick={reset}>
                                     <i className="ph-bold ph-arrow-clockwise" /> Retake Quiz
                                 </button>
-                                <Link href="/my-courses" className="qr-btn-back">
-                                    <i className="ph-bold ph-arrow-left" /> My Courses
-                                </Link>
+                                {nextArticle ? (
+                                    <Link href={`/my-courses/blog/${chapter.id}/${nextArticle.id}`} className="qr-btn-back">
+                                        Next Lesson <i className="ph-bold ph-arrow-right" />
+                                    </Link>
+                                ) : (
+                                    <Link href={isLastChapter ? "/my-courses" : `/my-courses/blog/${chapter.id + 1}/1`} className="qr-btn-back">
+                                        {isLastChapter ? "Course Complete" : "Next Chapter"} <i className="ph-bold ph-arrow-right" />
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -215,9 +246,15 @@ export default function QuizClient({ chapter }: Props) {
                         <button className="qr-btn-retake" onClick={reset}>
                             <i className="ph-bold ph-arrow-clockwise" /> Retake Quiz
                         </button>
-                        <Link href="/my-courses" className="qr-btn-back">
-                            <i className="ph-bold ph-arrow-left" /> Back to My Courses
-                        </Link>
+                        {nextArticle ? (
+                            <Link href={`/my-courses/blog/${chapter.id}/${nextArticle.id}`} className="qr-btn-back">
+                                Next Lesson <i className="ph-bold ph-arrow-right" />
+                            </Link>
+                        ) : (
+                            <Link href={isLastChapter ? "/my-courses" : `/my-courses/blog/${chapter.id + 1}/1`} className="qr-btn-back">
+                                {isLastChapter ? "Course Complete" : "Next Chapter"} <i className="ph-bold ph-arrow-right" />
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
@@ -231,9 +268,9 @@ export default function QuizClient({ chapter }: Props) {
             {/* Header */}
             <div className="quiz-topbar">
                 <div className="qtb-left">
-                    <Link href="/my-courses" className="qtb-back">
+                    <Link href={`/my-courses/blog/${chapter.id}/${article.id}`} className="qtb-back">
                         <i className="ph-fill ph-graduation-cap" style={{ fontSize: 20 }} />
-                        {chapter.title}
+                        {article.title}
                     </Link>
                 </div>
                 <div className="qtb-center">

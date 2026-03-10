@@ -1,14 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { ChapterData, BlogArticle, BlogSection } from "@/lib/courseData";
 
-const heroImages: Record<string, string> = {
-    intro: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop&q=80",
-    vocab: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&auto=format&fit=crop&q=80",
-};
-
+// Hero images are now managed directly by chapter data
 function SectionBlock({ section }: { section: BlogSection }) {
     switch (section.type) {
         case "heading":
@@ -74,9 +70,16 @@ export default function BlogArticleClient({ chapter, article }: Props) {
 
     const articleId = article.id;
     const chapterId = chapter.id;
+
+    React.useEffect(() => {
+        if (localStorage.getItem(`read_${chapterId}_${articleId}`) === "true") {
+            setIsRead(true);
+        }
+    }, [chapterId, articleId]);
+
     const nextArticle = chapter.articles.find(a => a.id === articleId + 1);
     const prevArticle = chapter.articles.find(a => a.id === articleId - 1);
-    const heroSrc = heroImages[article.hero] ?? heroImages["intro"];
+    const heroSrc = article.hero;
     const readPercent = isRead ? 100 : 50;
 
     return (
@@ -124,7 +127,10 @@ export default function BlogArticleClient({ chapter, article }: Props) {
                     <div className="blog-cta-bar">
                         <button
                             className={`btn-mark-read${isRead ? " done" : ""}`}
-                            onClick={() => setIsRead(true)}
+                            onClick={() => {
+                                setIsRead(true);
+                                localStorage.setItem(`read_${chapterId}_${articleId}`, "true");
+                            }}
                         >
                             {isRead
                                 ? <><i className="ph-fill ph-check-circle" /> Article Marked as Read</>
@@ -157,8 +163,8 @@ export default function BlogArticleClient({ chapter, article }: Props) {
                                 </Link>
                             ))}
                         </div>
-                        <Link href={`/my-courses/quiz/${chapterId}`} className="bsc-quiz-btn">
-                            <i className="ph-fill ph-clipboard-text" /> Take Chapter Quiz
+                        <Link href={`/my-courses/quiz/${chapterId}/${articleId}`} className="bsc-quiz-btn">
+                            <i className="ph-fill ph-clipboard-text" /> Take Article Quiz
                         </Link>
                     </div>
 
@@ -177,14 +183,9 @@ export default function BlogArticleClient({ chapter, article }: Props) {
                     </Link>
                     : <div />
                 }
-                {nextArticle
-                    ? <Link href={`/my-courses/blog/${chapterId}/${nextArticle.id}`} className="blog-nav-btn blog-nav-btn--next">
-                        <span>{nextArticle.title}</span> <i className="ph-bold ph-arrow-right" />
-                    </Link>
-                    : <Link href={`/my-courses/quiz/${chapterId}`} className="blog-nav-btn blog-nav-btn--quiz">
-                        Take Chapter Quiz <i className="ph-bold ph-arrow-right" />
-                    </Link>
-                }
+                <Link href={`/my-courses/quiz/${chapterId}/${articleId}`} className="blog-nav-btn blog-nav-btn--quiz">
+                    Take Topic Quiz <i className="ph-bold ph-arrow-right" />
+                </Link>
             </div>
         </div>
     );
