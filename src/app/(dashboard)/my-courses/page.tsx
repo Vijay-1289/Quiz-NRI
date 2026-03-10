@@ -156,11 +156,11 @@ export default function MyCourses() {
             </div>
 
             {/* ── Two-column layout ──────────────────────────── */}
-            <div className="map-layout">
+            <div className={`map-layout ${!selected ? 'map-layout--centered' : ''}`}>
 
                 {/* LEFT: Winding path map */}
-                <div className="map-col">
-                    <div className="map-journey-outer" style={{ height: SVG_H + 60 }}>
+                <div className="map-col" onClick={() => setSelected(null)}>
+                    <div className="map-journey-outer" style={{ height: SVG_H + 60 }} onClick={(e) => e.stopPropagation()}>
 
                         {/* SVG path */}
                         <svg className="map-svg" width={SVG_W} height={SVG_H}
@@ -215,7 +215,7 @@ export default function MyCourses() {
                                                 ? `0 0 0 5px ${colors.glow}, 0 6px 20px ${colors.glow}`
                                                 : ch.status !== "locked" ? `0 2px 10px ${colors.glow}` : "none",
                                         }}
-                                        onClick={() => ch.status !== "locked" && setSelected(ch.id)}
+                                        onClick={() => ch.status !== "locked" && setSelected(selected === ch.id ? null : ch.id)}
                                         disabled={ch.status === "locked"}
                                     >
                                         {ch.status === "completed" && <i className="ph-bold ph-check" />}
@@ -237,7 +237,7 @@ export default function MyCourses() {
                 </div>
 
                 {/* RIGHT: Chapter detail panel */}
-                <div className="map-detail-panel">
+                <div className={`map-detail-panel ${selected ? 'active' : ''}`}>
                     {activeCh ? (
                         <div className="map-detail-inner">
 
